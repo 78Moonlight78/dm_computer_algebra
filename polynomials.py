@@ -1,7 +1,8 @@
 from rational import *
 
 
-# P-1
+# Задача P-1: "Сложение многочленов"
+# Выполнил Богданов Г.В.
 def ADD_PP_P(m1, P1, m2, P2):
     i = 0
     diff = abs(m1 - m2)
@@ -23,7 +24,8 @@ def ADD_PP_P(m1, P1, m2, P2):
     return res
 
 
-# P-2
+#Задача P-2: Вычитание многочленов
+#Выполнил Чибисов А.А.
 def SUB_PP_P(a, A, b, B):
     # Узнаём максимальную степень среди наших многочленов
     max_degree = max(a, b)
@@ -41,71 +43,70 @@ def SUB_PP_P(a, A, b, B):
     # Используем функцию SUB_QQ_Q() и заполняем массив result
     for i in range(max_degree + 1):
         result += [SUB_QQ_Q(A[i], B[i])]
-
+    # Убираем незначашие нули
+    while (result[0][2][0] == 0 and max_degree > 0):
+        max_degree -= 1
+        result.pop(0)
     return max_degree, result
 
+    # P-3
 
-# P-3
-def MUL_PQ_P(m, C, n):  # Домножение многочлена на рац. число
-    for i in range(m + 1):  # Цикл по всем коэффициентам многочлена
-        C[i] = MUL_QQ_Q(C[i], n)  # Функция перемножения рационального числа на рациональное число
-    return [m, C]
+# Задача P-3
+def MUL_PQ_P(m, C, n):                   # Домножение многочлена на рац. число
+    c_t = C.copy()
+    for i in range(m+1):                 # Цикл по всем коэффициентам многочлена
+        c_t[i] = MUL_QQ_Q(c_t[i], n)      # Функция перемножения рационального числа на рациональное число
+    while (c_t[0][2][0] == 0 and m > 0):  # Убираем незначащие нули, если необходимо
+        m -= 1
+        c_t.pop(0)
+    return [m, c_t]                       # Возврат многочлена и его степени
+
+# Задача P-4: "Умножение многочлена на x^k"
+def MUL_Pxk_P(m, C, k):     		 # Умножение полинома на x^k:
+    c_t = C.copy()                       # Создание копии массива, чтобы не затронуть исходные данные.
+    for i in range(k):      		 # k раз добавляем 0 в самый маленький разряд,
+        c_t.append([0, 1, [0], 1, [1]])  # сдвигая другие разряды в большую сторону.
+    m += k                  		 # Не забываем увеличить степень.
+    return [m, c_t]
 
 
-# P-4
-def MUL_Pxk_P(m, C, k):  # Умножение полинома на x^k:
-    for i in range(k):  # k раз добавляем 0 в самый маленький разряд,
-        C.append([0, 1, [0], 1, [1]])  # сдвигая другие разряды в большую сторону.
-    m += k  # Не забываем увеличить степень.
-    return [m, C]
-
-
-# P-5
+# Задача P-5: Старший коэффициент многочлена
+# Выполнил Егоров И.М
 def LED_P_Q(C):
     return C[0]
 
 
-# P-6
+# Задача P-6 "Степень многочлена"
+# Выполнил Козориз К.И.
 def DEG_P_N(mass):
     return len(mass) - 1
 
+# Задача P-7: "Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей"
+# Выполнил Поллуксов А.В.
+def FAC_P_Q(s, C):
+    for i in range(s+1):
+        if i == 0:
+            na = C[i][1]
+            a = C[i][2]
+            nb = C[i][3]
+            b = C[i][4]
+        else:
+            na, a = GCF_NN_N(na, a, C[i][1], C[i][2])
+            nb, b = LCM_NN_N(nb, b, C[i][3], C[i][4])
+    return [0, na, a, nb, b]
 
-# P-7
-def FAC_P_Q(C):
-    A = [0]     # НОК и НОД не могут быть отрицательными
-    numers = []     # числители
-    denoms = []     # знаменатели
-    for i in range(1, C[0] + 2):
-        numers.append(C[i][1:1 + 2])
-        denoms.append(C[i][3:3 + 2])
-    a = GCF_NN_N(numers[0][0], numers[0][1], numers[1][0], numers[1][1])    # пара в числителе и зн-ле точно будет
-    b = LCM_NN_N(denoms[0][0], denoms[0][1], denoms[1][0], denoms[1][1])
-    if len(numers) > 2:
-        for i in range(2, len(numers)):
-            a = GCF_NN_N(a[0], a[1], numers[i][0], numers[i][1])
-    if len(denoms) > 2:
-        for i in range(2, len(denoms)):
-            b = LCM_NN_N(b[0], b[1], denoms[i][0], denoms[i][1])
-    for i in range(2):   # наверное можно проще
-        A.append(a[i])
-    for i in range(2):
-        A.append(b[i])
-    return A
+
 # P-8 / MUL_PP_P
-# Использованные модули: MUL_QQ_Q, ADD_PP_P
 # Выполнил: Волосевич А.Н. (1310)
 def MUL_PP_P(m1: int, C1: list, m2: int, C2: list) -> tuple:
-
     # Определене степени итогового многочлена
     res_m = m1 + m2
 
     # Определение итогового многочлена (пока состоящего из нулей)
     res_C = [[0, 1, [0], 1, [1]]] * (res_m + 1)
 
-
     # Перемножение элементов исходных массивов с помощью 2х циклов for:
-
-    for ind_1 in range(m1+1): # Цикл по первому исходному массиву
+    for ind_1 in range(m1 + 1):  # Цикл по первому исходному массиву
 
         # Определене степени промежуточного многочлена
         mid_m = m1 + m2 - ind_1
@@ -113,19 +114,45 @@ def MUL_PP_P(m1: int, C1: list, m2: int, C2: list) -> tuple:
         # Определение промежуточного многочлена
         mid_C = [[0, 1, [0], 1, [1]]] * (mid_m + 1)
 
-        for ind_2 in range(m2+1): # Цикл по второму исходному массиву
-
+        for ind_2 in range(m2 + 1):  # Цикл по второму исходному массиву
             # Сохранение промежуточного результа
-            mid_C[ind_2] =  MUL_QQ_Q(C1[ind_1], C2[ind_2]) # Перемножение коэффициентов
+            mid_C[ind_2] = MUL_QQ_Q(C1[ind_1], C2[ind_2])  # Перемножение коэффициентов
 
         # Сумма каждого промежуточного результата с текущим многочленом:
         res_m, res_C = ADD_PP_P(res_m, res_C, mid_m, mid_C)
 
     return res_m, res_C
-# P-9
-# P-10
-# P-11
-"""def GCF_PP_P(m1, C1, m2, C2):
+
+
+# Задача P-9: Частное от деления многочленов (DIV_PP_P)
+# Выполнил: Шаров Антон, 1310
+def DIV_PP_P(m1, C1, m2, C2):
+    c1_t = C1.copy()  # Временное делимое
+    C = [ [0, 1, [0], 1, [1]] for i in range(m1 - m2 + 1)]  # Итоговый полином
+    m = m1 - m2  # Степень итогового полинома
+    for i in range(m + 1):  # Пройдём по итоговому полиному
+        C[i] = DIV_QQ_Q(c1_t[0], C2[0])  # Делим старший коэффициент делимого на старший коэф делителя и получаем коэф в итоговый полином
+        l_t, c_t = MUL_PQ_P(m2, C2, C[i])  # Умножаем делитель на коэф полученный выше
+        l_t, c_t = MUL_Pxk_P(l_t, c_t, m - i)  # Приводим полином к степени делимого
+        m1, c1_t = SUB_PP_P(m1, c1_t, l_t, c_t)  # Вычитаем
+    return [m, C]
+
+
+# Задача P-10: "Остаток от деления многочлена на многочлен при делении с остатком"
+# Выполнил Кашуба Д.А.
+def MOD_PP_P(m1, C1, m2, C2):
+    m_temp, C_temp = DIV_PP_P(m1, C1, m2, C2)          # частное (b)
+    m_temp, C_temp = MUL_PP_P(m_temp, C_temp, m2, C2)  # b * k
+    m_res, C_res = SUB_PP_P(m1, C1, m_temp, C_temp)    # r = a - b * k
+    while(C_res[0][2][0] == 0 and m_res > 0):
+        C_res = C_res[1:]
+        m_res -= 1
+    return m_res, C_res
+
+
+#P-11 НОД многочленов
+# Выполнил Серкин Д.А. 1310
+def GCF_PP_P(m1, C1, m2, C2):
     if m2 > m1:
         m1, m2 = m2, m1
         C1, C2 = C2, C1
@@ -134,7 +161,7 @@ def MUL_PP_P(m1: int, C1: list, m2: int, C2: list) -> tuple:
 
     # Будем осуществлять деление до тех пор, пока остаток не равен нулю
     # 0 = 0, [0, 1, [0], 1, [1]]
-    while m3 != 0 or C3 != [0, 1, [0], 1, [1]]:
+    while m3 != 0 or C3[0][2][0] != 0:
         m1, C1 = m2, C2
         m2, C2 = m3, C3
         m3, C3 = MOD_PP_P(m1, C1, m2, C2)
@@ -143,15 +170,24 @@ def MUL_PP_P(m1: int, C1: list, m2: int, C2: list) -> tuple:
 
     # Узнаем степень многочлена
     m2 = DEG_P_N(C2)
-    if m2 == 0:
-        C2[0] = 0
     return [m2, C2]
-"""
 
-# P-12
-def DER_P_P(k, arr):
-    for i in range(k, -1, -1):
-        arr[k - i] = MUL_QQ_Q([0, 1, [i], 1, [1]], arr[k - i])
+
+# Задача P-12: " Производная многочлена"
+# Здех К.В.
+def DER_P_P(k,C):
+    arr = C.copy()
+    for i in range(k,-1,-1):
+        arr[k-i] = MUL_QQ_Q([0, 1, [i], 1, [1]],arr[k-i])
     arr = arr[0:-1]
-    return [k - 1, arr]
-# P-13
+    return [k-1,arr]
+
+
+# Задача P-13: " Преобразование многочлена — кратные корни в простые"
+# Здех К.В.
+def NMR_P_P(k,arr):
+    z,m = DER_P_P(k,arr)
+    u,t = GCF_PP_P(k,arr,z,m)
+    j,l = DIV_PP_P(k,arr,u,t)
+    return [j,l]
+

@@ -12,6 +12,43 @@ from polynomials import *
 from config import *
 
 
+def info(inf):
+    screen.fill(WHITE)
+    click = False
+    if not ('pol' in inf):
+        image = load_image(inf, -1, screen_width, 190)
+        screen.blit(image, (0, 50))
+    else:
+        image = load_image(inf, -1, screen_width, 230)
+        screen.blit(image, (0, 50))
+    image_2 = load_image("girl_2.png", -1, screen_width//17*14, 250)
+    screen.blit(image_2, (40, 250))
+    while True:
+        for event in pg.event.get():
+            click = False
+            # if user types QUIT then the screen will close
+            if event.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+            if event.type == pg.MOUSEBUTTONDOWN:
+                mouse = pg.mouse.get_pos()
+                button_i = button_layout_level_menu[7]
+                if button_i[0] < mouse[0] < button_i[0] + button_i[2] and button_i[1] < mouse[1] < button_i[1] + \
+                        button_i[3]:
+                    click = True
+        if button("В Ы Х О Д", *button_layout_level_menu[7], click):
+            if 'nat' in inf:
+                screen_input_int()
+            elif 'int' in inf:
+                screen_input_int()
+            elif 'rat' in inf:
+                rat_choice()
+            elif 'pol' in inf:
+                polinom_choice()
+        pg.display.flip()
+        clock.tick(60)
+
+
 def correct_polinom(symb,text):
     flag = False
     if text:
@@ -38,6 +75,7 @@ def screen_input_nat():
     input_text1, input_text2, output_text = '', '', 'Вывод'
     active1, active2 = False, False
     click = False
+
     while True:
         for event in pg.event.get():
             click = False
@@ -59,7 +97,7 @@ def screen_input_nat():
                 else:
                     active2 = False
                 if not (input_rect1.collidepoint(event.pos) and input_rect2.collidepoint(event.pos)):
-                    for i in range(8):
+                    for i in range(9):
                         mouse = pg.mouse.get_pos()
                         button_i = button_layout_level_menu[i]
                         if button_i[0] < mouse[0] < button_i[0] + button_i[2] and button_i[1] < mouse[1] < button_i[1] + \
@@ -109,6 +147,8 @@ def screen_input_nat():
                 output_text = output_nat(LCM_NN_N(*input_nat(input_text1), *input_nat(input_text2)))
         elif button("В Ы Х О Д", *button_layout_level_menu[7], click):
             menu_of_type()
+        elif button("И Н С Т Р У К Ц И Я", *button_layout_level_menu[8], click):
+            info('inf_nat.png')
 
         text_surface1 = menu_text.render(input_text1, True, WHITE)
         text_surface2 = menu_text.render(input_text2, True, WHITE)
@@ -189,9 +229,11 @@ def screen_input_int():
                 else:
                     active2 = False
                 if not (input_rect1.collidepoint(event.pos) and input_rect2.collidepoint(event.pos)):
-                    for i in range(6):
+                    for i in range(7):
                         if i == 5:
                             i = 7
+                        if i == 6:
+                            i = 8
                         mouse = pg.mouse.get_pos()
                         button_i = button_layout_level_menu[i]
                         if button_i[0] < mouse[0] < button_i[0] + button_i[2] and button_i[1] < mouse[1] < button_i[1] + \
@@ -244,6 +286,8 @@ def screen_input_int():
                 output_text = "Введите значение"
         elif button("В Ы Х О Д", *button_layout_level_menu[7], click):
             menu_of_type()
+        elif button("И Н С Т Р У К Ц И Я", *button_layout_level_menu[8], click):
+            info('inf_int.png')
 
         text_surface1 = menu_text.render(input_text1, True, WHITE)
         text_surface2 = menu_text.render(input_text2, True, WHITE)
@@ -324,9 +368,11 @@ def rat_choice():
                 else:
                     active2 = False
                 if not (input_rect1.collidepoint(event.pos) and input_rect2.collidepoint(event.pos)):
-                    for i in range(6):
+                    for i in range(7):
                         if i == 5:
                             i = 7
+                        if i == 6:
+                            i = 8
                         mouse = pg.mouse.get_pos()
                         button_i = button_layout_level_menu[i]
                         if button_i[0] < mouse[0] < button_i[0] + button_i[2] and button_i[1] < mouse[1] < button_i[1] + \
@@ -377,6 +423,8 @@ def rat_choice():
                 output_text = "Введите значение"
         elif button("В Ы Х О Д", *button_layout_level_menu[7], click):
             menu_of_type()
+        elif button("И Н С Т Р У К Ц И Я", *button_layout_level_menu[8], click):
+            info('inf_rat.png')
 
         text_surface1 = menu_text.render(input_text1, True, WHITE)
         text_surface2 = menu_text.render(input_text2, True, WHITE)
@@ -470,9 +518,7 @@ def polinom_choice():
                 else:
                     active4 = False
                 if not (input_rect1.collidepoint(event.pos) and input_rect2.collidepoint(event.pos)):
-                    for i in range(6):
-                        if i == 5:
-                            i = 7
+                    for i in range(11):
                         mouse = pg.mouse.get_pos()
                         button_i = button_layout_level_menu[i]
                         if button_i[0] < mouse[0] < button_i[0] + button_i[2] and button_i[1] < mouse[1] < button_i[1] + \
@@ -502,32 +548,70 @@ def polinom_choice():
                         input_text3 += event.unicode
                     elif active4 and correct_polinom(event.unicode, input_text4):
                         input_text4 += event.unicode
-        # it will set background color of screen
         flag = 'Не верные данные'
         if input_text1 and input_text2 and input_text3 and input_text4:
-            if input_text2[-1:] not in '+- /' and input_text1[-1] != ' ' and input_text4[-1:] not in '+- /' and input_text3[-1] != ' ':
+            if input_text2[-1:] not in '+- / ' and input_text1[-1] != ' ' and input_text4[-1:] not in '+- / ' and input_text3[-1] != ' ':
                 flag = False
+
         if button("С Л О Ж Е Н И Е", *button_layout_level_menu[0], click):
             if not flag and input_polynom(input_text1, input_text2) and input_polynom(input_text3, input_text4):
                 output_text = output_pol(ADD_PP_P(*input_polynom(input_text1, input_text2), *input_polynom(input_text3, input_text4)))
             else:
+                flag = 'Не верные данные'
                 output_text = flag
         elif button("В Ы Ч И Т А Н И Е", *button_layout_level_menu[1], click):
             if not flag and input_polynom(input_text1, input_text2) and input_polynom(input_text3, input_text4):
                 output_text = output_pol(SUB_PP_P(*input_polynom(input_text1, input_text2), *input_polynom(input_text3, input_text4)))
             else:
+                flag = 'Не верные данные'
                 output_text = flag
         elif button("У М Н О Ж Е Н И Е ", *button_layout_level_menu[2], click):
             if not flag and input_polynom(input_text1, input_text2) and input_polynom(input_text3, input_text4):
                 output_text = output_pol(MUL_PP_P(*input_polynom(input_text1, input_text2), *input_polynom(input_text3, input_text4)))
             else:
+                flag = 'Не верные данные'
                 output_text = flag
         elif button("О С Т А Т О К  О Т  Д Е Л Е Н И Я ", *button_layout_level_menu[3], click):
-            pass
+            if not flag and input_polynom(input_text1, input_text2) and input_polynom(input_text3, input_text4):
+                output_text = output_pol(
+                    MOD_PP_P(*input_polynom(input_text1, input_text2), *input_polynom(input_text3, input_text4)))
+                if output_text =='':
+                    output_text = 0
+            else:
+                flag = 'Не верные данные'
+                output_text = flag
         elif button("Ч А С Т Н О Е  О Т  Д Е Л Е Н И Я ", *button_layout_level_menu[4], click):
-            pass
+            if not flag and input_polynom(input_text1, input_text2) and input_polynom(input_text3, input_text4):
+                output_text = output_pol(
+                    DIV_PP_P(*input_polynom(input_text1, input_text2), *input_polynom(input_text3, input_text4)))
+            else:
+                flag = 'Не верные данные'
+                output_text = flag
         elif button("П Р О И З В О Д Н А Я ", *button_layout_level_menu[5], click):
-            pass
+            if input_text1 and input_text2:
+                if input_text2[-1:] not in '+- / ' and input_text1[-1] != ' ':
+                    output_text = output_pol(
+                        DER_P_P(*input_polynom(input_text1, input_text2)))
+            else:
+                flag = 'Не верные данные'
+                output_text = flag
+        elif button("И Н С Т Р У К Ц И Я", *button_layout_level_menu[8], click):
+            info('inf_pol.png')
+        elif button("Н О Д", *button_layout_level_menu[9], click):
+            if not flag and input_polynom(input_text1, input_text2) and input_polynom(input_text3, input_text4):
+                output_text = output_pol(
+                    GCF_PP_P(*input_polynom(input_text1, input_text2), *input_polynom(input_text3, input_text4)))
+            else:
+                flag = 'Не верные данные'
+                output_text = flag
+        elif button("К Р А Т Н Ы Е  К О Р Н И", *button_layout_level_menu[10], click):
+            if input_text1 and input_text2:
+                if input_text2[-1:] not in '+- / ' and input_text1[-1] != ' ':
+                    output_text = output_pol(
+                        NMR_P_P(*input_polynom(input_text1, input_text2)))
+            else:
+                flag = 'Не верные данные'
+                output_text = flag
         elif button("В Ы Х О Д", *button_layout_level_menu[7], click):
             menu_of_type()
 
@@ -608,24 +692,6 @@ def polinom_choice():
         clock.tick(60)
 
 
-def window_init():
-    # получаем размеры монитора
-    # в pg неудобно получать размер монитора, поэтому воспользуемся
-    # другой библиотекой
-    from tkinter import Tk
-    temp = Tk()
-    MONITOR_SIZE = temp.winfo_screenwidth(), temp.winfo_screenheight()
-    temp.destroy()
-    del temp
-    # помещаем окно в центр экрана
-    screen_coords = ((MONITOR_SIZE[0] - WIN_SIZE.w) // 3 * 2, (MONITOR_SIZE[1] - WIN_SIZE.h) // 2)
-    os.environ['SDL_VIDEO_WINDOW_POS'] = f"{screen_coords[0]}, {screen_coords[1]}"
-
-    screen = pg.display.set_mode(WIN_SIZE.size)
-
-    return screen
-
-
 def load_image(name, color_key=None, w=WIN_SIZE.width, h=WIN_SIZE.height):
     # Получаем путь до файла
     fullname = os.path.join('data', name)
@@ -673,6 +739,7 @@ def text_objects(text, font, colour=BLACK):
     text_surface = font.render(text, True, colour)
     return text_surface, text_surface.get_rect()
 
+
 def menu_of_type():
     screen.fill(WHITE)
     pg.display.flip()
@@ -710,7 +777,8 @@ def menu_of_type():
 
 if __name__ == '__main__':
     pg.init()
-    screen = window_init()
+
+    screen = pg.display.set_mode((500, 500))
     pg.display.set_caption('computer algebra')
     """programIcon = pg.image.load('data/girl_2.png')
     pg.display.set_icon(programIcon)"""
@@ -731,5 +799,8 @@ if __name__ == '__main__':
                                 (screen_width//17 + BUTTON_WIDTH_LEVEL,int(screen_height * 69 // 81), BUTTON_WIDTH_LEVEL, BUTTON_HEIGHT_LEVEL),
                                 (screen_width//17 + BUTTON_WIDTH_LEVEL*2, int(screen_height * 69 // 81), BUTTON_WIDTH_LEVEL, BUTTON_HEIGHT_LEVEL),
                                 (screen_width//17 + BUTTON_WIDTH_LEVEL, int(screen_height * 75 // 81), BUTTON_WIDTH_LEVEL, BUTTON_HEIGHT_LEVEL),
-                                (screen_width//25, int(screen_height // 40), BUTTON_WIDTH_LEVEL, BUTTON_HEIGHT_LEVEL)]
+                                (screen_width//25, int(screen_height // 40), BUTTON_WIDTH_LEVEL, BUTTON_HEIGHT_LEVEL),
+                                (screen_width//17, 250, BUTTON_WIDTH_LEVEL * 3, BUTTON_HEIGHT_LEVEL),
+                                (screen_width//17, int(screen_height * 75 // 81), BUTTON_WIDTH_LEVEL, BUTTON_HEIGHT_LEVEL),
+                                (screen_width//17 + BUTTON_WIDTH_LEVEL, int(screen_height * 75 // 81), BUTTON_WIDTH_LEVEL, BUTTON_HEIGHT_LEVEL)]
     menu_of_type()

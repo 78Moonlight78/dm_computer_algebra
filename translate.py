@@ -39,7 +39,6 @@ def input_polynom(text1, text2):
                 dict_pol[text1[i]] = text2[i]
             else:
                 return False
-    print(dict_pol)
     for i in range(max_rang, -1, -1):
         if str(i) in dict_pol.keys():
             if '/' in dict_pol[str(i)]:

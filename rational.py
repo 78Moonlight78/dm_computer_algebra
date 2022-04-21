@@ -1,6 +1,7 @@
 from integer import  *
 
-#Q-1
+# Q-1 "Сокращение дроби"
+# автор: Пелагейко Анастасия, 1310
 def RED_Q_Q(Q):
     # получаем абсолютное число числителя (получаем натуральное число),
     # используя функцию, возвращающую абсолютную величину числа, 'ABS_Z_N' (результат - натуральное)
@@ -23,9 +24,6 @@ def RED_Q_Q(Q):
 
 # Задача Q-2: "Проверка рационального числа на целое"
 # Выполнил Богданов Г.В.
-# Алгоритм:
-# Программа проверяет знаменатель числа на то, равен ли он 1.
-# Так как дробь сокращена, то число будет являться целым тогда и лишь тогда, когда знаменатель числа будет равен 1.
 def INT_Q_B(Q):
     return 1 if Q[3] == 1 and Q[4][0] == 1 else 0
 
@@ -37,11 +35,6 @@ def TRANS_Z_Q(b1, n1, A1):
 
 # Задача Q-4: "Преобразование дробного в целое (если знаменатель равен 1)"
 # Выполнил Данилов А.С.
-# Алгоритм:
-# Если номер старшей позиции числа (в массиве это Q[3]) равен 1 и число с индексом 0 в массиве равно 1, значит,
-# знаменатель равен 1. Следовательно, дробное число можно преобразовать в целое;
-# в этом случае программа возвращает числитель.
-# Если знаменатель дроби не равен одному, то возвращается 0.
 def TRANS_Q_Z(Q):
     return [Q[0], Q[1], Q[2]] if Q[3] == 1 and Q[4][0] == 1 else 0
 
@@ -49,7 +42,7 @@ def TRANS_Q_Z(Q):
 # Q-5
 # Выполнил Богданов Г.В.
 def ADD_QQ_Q(Q1, Q2):
-
+    print(type(Q1[3]), type(Q1[4]), type(Q2[3]), type(Q2[4]))
     denominator = LCM_NN_N(Q1[3], Q1[4], Q2[3], Q2[4])
 
     num1 = DIV_NN_N(denominator[0], denominator[1], Q1[3], Q1[4])
@@ -62,7 +55,9 @@ def ADD_QQ_Q(Q1, Q2):
 
     numerator = ADD_ZZ_Z(minuend[0], minuend[1], minuend[2], subtrahend[0], subtrahend[1], subtrahend[2])
 
-    return [numerator[0], numerator[1], numerator[2], denominator[0], denominator[1]]
+    result = RED_Q_Q([numerator[0], numerator[1], numerator[2], denominator[0], denominator[1]])
+
+    return result
 
 
 #Q-6
@@ -107,8 +102,9 @@ def MUL_QQ_Q(A, B):
     # Используем срез, чтобы присвоить переменной amount2 номер старшей позиции, а переменной number2 - массив цифр
     sign, amount1, number1 = MUL_ZZ_Z(A[0], A[1], A[2], B[0], B[1], B[2])
     amount2, number2 = MUL_ZZ_Z(0, A[3], A[4], 0, B[3], B[4])[1:]
-    return [sign, amount1, number1, amount2, number2]
-
+    # Сокращаем дробь
+    result = RED_Q_Q([sign, amount1, number1, amount2, number2])
+    return result
 
 # Задача Q-8: Деление дробей (делитель отличен от нуля)
 # Выполнил Чибисов А.А.
@@ -117,6 +113,7 @@ def DIV_QQ_Q(A, B):
     # Используем срез, чтобы присвоить переменной amount2 номер старшей позиции, а переменной number2 - массив цифр
     sign, amount1, number1 = MUL_ZZ_Z(A[0], A[1], A[2], B[0], B[3], B[4])
     amount2, number2 = MUL_ZZ_Z(0, B[1], B[2], 0, A[3], A[4])[1:]
-
-    return [sign, amount1, number1, amount2, number2]
+    # Сокращаем дробь
+    result = RED_Q_Q([sign, amount1, number1, amount2, number2])
+    return result
 
