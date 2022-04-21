@@ -32,7 +32,6 @@ def COM_NN_D(n1, arr1, n2, arr2):
         return 0
 
 
-
 # Задача N-2(NZER_N_B): "Проверка на ноль"
 # Выполнил Волосевич А.Н. 1310
 
@@ -54,7 +53,6 @@ def NZER_N_B(n: int, A: list) -> bool:
         if num != 0:
             return True
     return False
-
 
 
 # Задача N-3(ADD_1N_N): "Добавление 1 к натуральному числу"
@@ -86,7 +84,6 @@ def ADD_1N_N(n, arr):
     return [n, arr]
 
 
-
 # Задача N-4(ADD_NN_N): "Сложение натуральных чисел"
 # Выполнил Егоров И.М. 1310
 
@@ -105,7 +102,7 @@ def ADD_1N_N(n, arr):
 # Возвращаем массив чисел A (получившаяся сумма) и количество цифр в массиве n_a.
 
 def ADD_NN_N(n_a, A, n_b, B):
-    if COM_NN_D(n_a, A, n_b, B)==1:
+    if COM_NN_D(n_a, A, n_b, B) == 1:
         tmp = A
         A = B
         B = tmp
@@ -120,15 +117,14 @@ def ADD_NN_N(n_a, A, n_b, B):
         if A[i] >= 10:
             A[i] = A[i] % 10
             if i > 0:
-                A[i-1] += 1
+                A[i - 1] += 1
             else:
                 A.insert(0, 1)
                 n_a += 1
         i -= 1
         j -= 1
-        
-    return [n_a, A]
 
+    return [n_a, A]
 
 
 # Задача N-5(SUB_NN_N): "Вычитание натуральных чисел"
@@ -151,25 +147,24 @@ def ADD_NN_N(n_a, A, n_b, B):
 # Длина массива res (номер старшей позиции), и сам массив res[..]
 
 def SUB_NN_N(n1: int, a1: list, n2: int, a2: list) -> tuple:
-    res = [] 
-    eq = COM_NN_D(n1, a1, n2, a2)  
-    if eq == 0:  
-        res.append(0) 
-    elif eq == 2: 
-        for i in range(1, n1 + 1):  
+    res = []
+    eq = COM_NN_D(n1, a1, n2, a2)
+    if eq == 0:
+        res.append(0)
+    elif eq == 2:
+        for i in range(1, n1 + 1):
             while n1 > n2:
                 a2 = [0] + a2
                 n2 += 1
             if a1[-i] >= a2[-i]:
-                res.append(a1[-i] - a2[-i])  
-                if res[-1] < 0: a1[-i + 1] += 1  
+                res.append(a1[-i] - a2[-i])
+                if res[-1] < 0: a1[-i + 1] += 1
             else:
                 a1[-i - 1] -= 1
                 res.append(a1[-i] - a2[-i] + 10)
         res.reverse()
-        while res[0] == 0: res.pop(0)  
+        while res[0] == 0: res.pop(0)
     return len(res), res
-
 
 
 # Задача N-6(MUL_ND_N): "Умножение натурального числа на цифру"
@@ -189,29 +184,28 @@ def SUB_NN_N(n1: int, a1: list, n2: int, a2: list) -> tuple:
 # Целое число n, массив B[..]
 
 def MUL_ND_N(n, A, D):
-    s=0                         
-    r=0                         
-    B=[]                            
+    s = 0
+    r = 0
+    B = []
 
-    A.reverse()                     
+    A.reverse()
     for i in range(n):
-        s = int(A[i])*D + int(r)    
+        s = int(A[i]) * D + int(r)
         s = str(s)
-        if (len(s)==2) and (i+1!=n):
-            B.append(int(s[1]))     
-            r = s[0]                
-        if (len(s)==2) and (i+1==n):
+        if (len(s) == 2) and (i + 1 != n):
             B.append(int(s[1]))
-            B.append(int(s[0])
-        if len(s)==1:               
-            B.append(int(s[0]))     
-            r=0                     
-    B.reverse()                     
-    while(B[0] == 0 and len(B) > 1):
-        B.pop(0)
+            r = s[0]
+        if (len(s) == 2) and (i + 1 == n):
+            B.append(int(s[1]))
+            B.append(int(s[0]))
+            if len(s) == 1:
+                B.append(int(s[0]))
+            r = 0
+            B.reverse()
+            while (B[0] == 0 and len(B) > 1):
+                B.pop(0)
     n = len(B)
     return n, B
-
 
 
 # Задача N-7(MUL_Nk_N): "Умножение натурального числа на 10^k"
@@ -236,7 +230,6 @@ def MUL_Nk_N(n, A, k):
         a_t.insert(i, 0)
     n += k
     return n, a_t
-
 
 
 # Задача N-8(MUL_NN_N): "Умножение натурального числа на 10^k"
@@ -265,7 +258,7 @@ def MUL_NN_N(n1, A, n2, B):
         c2 = 1
         mul0.insert(0, 0)
     else:
-        
+
         if COM_NN_D(n1, A, n2, B) == 1:
             A, B = B, A
             temp = n1
@@ -273,7 +266,6 @@ def MUL_NN_N(n1, A, n2, B):
             n2 = temp
 
         for i in range(len(B) - 1, -1, -1):
-            
             c, L = MUL_ND_N(len(A), A, B[i])
             A.reverse()
 
@@ -283,7 +275,6 @@ def MUL_NN_N(n1, A, n2, B):
 
             k = k + 1
     return [c2, mul0]
-
 
 
 # Задача N-9(SUB_NDN_N): "Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом"
@@ -307,7 +298,6 @@ def SUB_NDN_N(n1, A1, n2, A2, D):
     n2, A2 = MUL_ND_N(n2, A2, D)
     n_res, A_res = SUB_NN_N(n1, A1, n2, A2)
     return n_res, A_res
-
 
 
 # Задача N-10(DIV_NN_Dk): "Вычисление первой цифры деления большего натурального на меньшее,
@@ -341,7 +331,6 @@ def DIV_NN_Dk(n_1, arr1, n_2, arr2):
     return [d, k]
 
 
-
 # Задача N-11(DIV_NN_N): "Частное от деления натуральных чисел"
 # Выполнил Егоров И.М. 1310
 
@@ -353,7 +342,7 @@ def DIV_NN_Dk(n_1, arr1, n_2, arr2):
 # Создаем результирующий массив k. s - длина массива k. С помощью функции DIV_NN_Dk вычисляем первую цифру частного (arr1 / arr2)
 # Прибавляем ее в результирующий массив k. С помощью функции MUL_Nk_N умножаем делитель (arr2) на 10 в степени k_t.
 # Вычитаем с помощью функции SUB_NDN_N из arr1 число полученное число t_2 длины t_1 (это arr2 умноженное на 10^k_t)
-# Прибавляем 1 к длине результата. 
+# Прибавляем 1 к длине результата.
 
 # Выходные данные:
 # Возвращаем результирующий массив k (частное от деления arr1 на arr2 без остатка) и длину этого массива s.
@@ -369,7 +358,6 @@ def DIV_NN_N(n_1, arr_1, n_2, arr_2):
         d_t, k_t = DIV_NN_Dk(n_1, arr_1, n_2, arr_2)
     k[s - k_t - 1] = d_t
     return [s, k]
-
 
 
 # Задача N-12(MOD_NN_N): "Остаток от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля)"
@@ -398,9 +386,8 @@ def MOD_NN_N(n1, arr1, n2, arr2):
             return n1, arr1
         n1, b = SUB_NDN_N(n1, b, n2, arr2, 1)
         arr2.reverse()
-        
-    return n1, arr1
 
+    return n1, arr1
 
 
 # Задача N-13(GCF_NN_N): "НОД натуральных чисел"
@@ -421,18 +408,17 @@ def MOD_NN_N(n1, arr1, n2, arr2):
 
 def GCF_NN_N(n1, arr1, n2, arr2):
     while NZER_N_B(n1, arr1) == True and NZER_N_B(n2, arr2) == True:
-        if COM_NN_D(n1, arr1, n2, arr2) == 2: #arr1 > arr2
+        if COM_NN_D(n1, arr1, n2, arr2) == 2:  # arr1 > arr2
             n1, arr1 = MOD_NN_N(n1, arr1, n2, arr2)
-        elif COM_NN_D(n1, arr1, n2, arr2) == 1: #arr1 < arr2
+        elif COM_NN_D(n1, arr1, n2, arr2) == 1:  # arr1 < arr2
             n2, arr2 = MOD_NN_N(n2, arr2, n1, arr1)
         else:
             return n1, arr1
     else:
-        if COM_NN_D(n1, arr1, n2, arr2) == 2: #arr1 > arr2
+        if COM_NN_D(n1, arr1, n2, arr2) == 2:  # arr1 > arr2
             return n1, arr1
         else:
             return n2, arr2
-
 
 
 # N-14(LCM_NN_N): "НОК натуральных чисел"
