@@ -184,28 +184,17 @@ def SUB_NN_N(n1: int, a1: list, n2: int, a2: list) -> tuple:
 # Целое число n, массив B[..]
 
 def MUL_ND_N(n, A, D):
-    s = 0
+    ans = [0 for i in range(n)]
     r = 0
-    B = []
-
-    A.reverse()
-    for i in range(n):
-        s = int(A[i]) * D + int(r)
-        s = str(s)
-        if (len(s) == 2) and (i + 1 != n):
-            B.append(int(s[1]))
-            r = s[0]
-        if (len(s) == 2) and (i + 1 == n):
-            B.append(int(s[1]))
-            B.append(int(s[0]))
-            if len(s) == 1:
-                B.append(int(s[0]))
-            r = 0
-            B.reverse()
-            while (B[0] == 0 and len(B) > 1):
-                B.pop(0)
-    n = len(B)
-    return n, B
+    for i in range(n - 1, -1, -1):
+        ans[i] = A[i] * D + r
+        if ans[i] >= 10:
+            r = ans[i] // 10
+            ans[i] = ans[i] % 10
+    if r != 0:
+        ans.insert(0, r)
+        n += 1
+    return [n, ans]
 
 
 # Задача N-7(MUL_Nk_N): "Умножение натурального числа на 10^k"
@@ -439,3 +428,5 @@ def LCM_NN_N(n1, A1, n2, A2):
     m1, m2 = MUL_NN_N(n1, A1, n2, A2)
     g1, g2 = GCF_NN_N(n1, A1, n2, A2)
     return DIV_NN_N(m1, m2, g1, g2)
+
+
