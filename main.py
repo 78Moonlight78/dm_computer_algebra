@@ -133,9 +133,12 @@ def screen_input_nat():
             if (input_text1 and input_text2):
                 output_text = output_nat(MUL_NN_N(*input_nat(input_text1), *input_nat(input_text2)))
         elif button("О С Т А Т О К  О Т  Д Е Л Е Н И Я ", *button_layout_level_menu[3], click):
-            pass
+            if (input_text1 and input_text2) and int(input_text2) < int(input_text1):
+                output_text = output_nat(MOD_NN_N(*input_nat(input_text1), *input_nat(input_text2)))
+            else:
+                output_text = "Первое меньше, попробуйте другое число"
         elif button("Ч А С Т Н О Е  О Т  Д Е Л Е Н И Я ", *button_layout_level_menu[4], click):
-            if (input_text1 and input_text2) and input_text2 < input_text1:
+            if (input_text1 and input_text2) and int(input_text2) < int(input_text1):
                 output_text = output_nat(DIV_NN_N(*input_nat(input_text1), *input_nat(input_text2)))
             else:
                 output_text = "Первое меньше, попробуйте другое число"
@@ -276,12 +279,12 @@ def screen_input_int():
                 output_text = "Введите значение"
         elif button("О С Т А Т О К  О Т  Д Е Л Е Н И Я ", *button_layout_level_menu[3], click):
             if flag:
-                output_text = output_int(DIV_ZZ_Z(*input_int(input_text1), *input_int(input_text2)))
+                output_text = output_int(MOD_ZZ_Z(*input_int(input_text1), *input_int(input_text2)))
             else:
                 output_text = "Введите значение"
         elif button("Ч А С Т Н О Е  О Т  Д Е Л Е Н И Я ", *button_layout_level_menu[4], click):
             if flag:
-                output_text = output_int(MOD_ZZ_Z(*input_int(input_text1), *input_int(input_text2)))
+                output_text = output_int(DIV_ZZ_Z(*input_int(input_text1), *input_int(input_text2)))
             else:
                 output_text = "Введите значение"
         elif button("В Ы Х О Д", *button_layout_level_menu[7], click):
