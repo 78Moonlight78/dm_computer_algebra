@@ -125,7 +125,7 @@ def screen_input_nat():
            else:
                output_text = "Введите значение"
         elif button("В Ы Ч И Т А Н И Е", *button_layout_level_menu[1], click):
-            if (input_text1 and input_text2) and input_text2 < input_text1:
+            if (input_text1 and input_text2) and int(input_text2) <= int(input_text1):
                 output_text = output_nat(SUB_NN_N(*input_nat(input_text1), *input_nat(input_text2)))
             else:
                 output_text = "Первое меньше, попробуйте другое число"
