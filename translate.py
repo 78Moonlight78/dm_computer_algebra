@@ -1,3 +1,5 @@
+from rational import RED_Q_Q
+
 def input_nat(text):
     new_arr = [int(i)for i in list(text)]
     return [len(text), new_arr]
@@ -60,6 +62,7 @@ def output_int(arr):
         return ("").join(["-"]+[str(i) for i in arr[2]])
 
 def output_rational(arr):
+    arr = RED_Q_Q(arr)
     return (output_int(arr[0:3]) + '/' + output_nat(arr[3:]))
 
 def output_pol(arr):
